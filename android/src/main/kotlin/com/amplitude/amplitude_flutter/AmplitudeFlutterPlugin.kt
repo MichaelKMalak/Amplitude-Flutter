@@ -1,10 +1,11 @@
 package com.amplitude.amplitude_flutter
 
-import android.content.Context
 import android.app.Application
+import android.content.Context
 import com.amplitude.api.Amplitude
 import com.amplitude.api.AmplitudeServerZone
 import com.amplitude.api.Identify
+import com.amplitude.api.TrackingOptions
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
@@ -45,7 +46,9 @@ class AmplitudeFlutterPlugin : FlutterPlugin, MethodCallHandler {
 
         when (call.method) {
             "init" -> {
+                val options = TrackingOptions().disableCity().disableIpAddress().disableLatLng().disableCarrier()
                 val client = Amplitude.getInstance(instanceName)
+                client.setTrackingOptions(options)
                 client.initialize(ctxt, json.getString("apiKey"),
                         json.optString("userId", null))
                 val application = ctxt?.applicationContext

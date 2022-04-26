@@ -1,6 +1,7 @@
 import Flutter
 import UIKit
 import Amplitude
+import AMPTrackingOptions
 
 @objc public class SwiftAmplitudeFlutterPlugin: NSObject, FlutterPlugin {
     public static func register(with registrar: FlutterPluginRegistrar) {
@@ -26,6 +27,9 @@ import Amplitude
                 switch (call.method) {
                 // Init
                 case "init":
+                    let options:AMPTrackingOptions! = AMPTrackingOptions.options().disableCity().disableIPAddress().disablePlatform().disableLatLng().disableCarrier()
+                    Amplitude.instance(withName: instanceName).setTrackingOptions(options)
+                    
                     let apiKey = args["apiKey"] as! String
 
                     if (apiKey.isEmpty) {
